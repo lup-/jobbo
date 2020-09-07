@@ -8,6 +8,7 @@ services:
       - ${PORT}:80
     volumes:
       - ./frontend/dist:/var/www/public
+      - ./uploads:/var/www/public/uploads
       - ./etc/nginx/site.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
@@ -17,16 +18,18 @@ services:
     container_name: 'jobbo_backend'
     ports:
       - 3000:3000
+      - 9229:9229
     depends_on:
       - mongo
     volumes:
       - ./backend:/var/www
+      - ./uploads:/var/www/uploads
     working_dir: /var/www
     environment:
       - NODE_ENV=development
       - MONGO_HOST=jobbo_mongo
       - MONGO_DB=jobbo
-    command: npm run start
+    command: npm run debug
 
   mongo:
     image: mongo
